@@ -29,8 +29,7 @@ gen_mail_content() {
 send_mail() {
     echo "$MAIL_CONTENT" | mutt -a "$INVOICE_FOLDER/$MAIL_ATTACH" -s "InvoiceHelper Result" -- 1260091093@qq.com
 
-    if [ $? -eq 0 ]
-    then
+    if [ $? -eq 0 ]; then
         echo -e "Mail sent successfully, content: \n$MAIL_CONTENT"
     else
         echo -e "Failed to send mail, content: \n$MAIL_CONTENT"
