@@ -5,6 +5,7 @@ source ./logger.sh
 INPUT_CONFIG=input.config
 OUTPUT_FOLDER=output
 
+
 main() {
     rm $OUTPUT_FOLDER/*
 
@@ -21,4 +22,3 @@ main() {
 }
 
 main
-
