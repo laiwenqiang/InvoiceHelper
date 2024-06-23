@@ -1,22 +1,24 @@
 #!/bin/bash
 
+source ./logger.sh
+
 INVOICE_FOLDER=$1
 MAIL_ATTACH="发票附件.tar"
 MAIL_CONTENT=""
 
 check_invoice_folder() {
     if [ -z "$INVOICE_FOLDER" ]; then
-        echo "Error: No directory supplies"
+        log_error "No directory supplies"
         exit 1
     fi
 
     if [ ! -d "$INVOICE_FOLDER" ]; then
-        echo "Error: $INVOICE_FOLDER is not a directory"
+        log_error "$INVOICE_FOLDER is not a directory"
         exit 1
     fi
 
     if [ -z "$(ls "$INVOICE_FOLDER")" ]; then
-        echo "Error: $INVOICE_FOLDER is an empty directory"
+        log_error "$INVOICE_FOLDER is an empty directory"
         exit 1
     fi
 }
@@ -30,9 +32,9 @@ send_mail() {
     echo "$MAIL_CONTENT" | mutt -a "$INVOICE_FOLDER/$MAIL_ATTACH" -s "InvoiceHelper Result" -- 1260091093@qq.com
 
     if [ $? -eq 0 ]; then
-        echo -e "Mail sent successfully, content: \n$MAIL_CONTENT"
+        log_info "Mail sent successfully, content: \n$MAIL_CONTENT"
     else
-        echo -e "Failed to send mail, content: \n$MAIL_CONTENT"
+        log_error "Failed to send mail, content: \n$MAIL_CONTENT"
         exit 1
     fi
 }
@@ -40,7 +42,7 @@ send_mail() {
 main() {
     check_invoice_folder
     gen_mail_content
-    send_mail
+    send_mail1
 }
 
 main $1
