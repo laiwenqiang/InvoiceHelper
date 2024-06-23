@@ -1,15 +1,24 @@
 #!/bin/bash
 
+source ./logger.sh
+
 INPUT_CONFIG=input.config
 OUTPUT_FOLDER=output
 
-rm $OUTPUT_FOLDER/*
+main() {
+    rm $OUTPUT_FOLDER/*
 
-while IFS= read -r url
-do
+    while IFS= read -r url
+    do
     if [[ $url != \#* ]]; then
-            ./InvoiceDownloader.sh $url $OUTPUT_FOLDER > >(tee -a log/output.log) 2> >(tee -a log/output.error >&2)
+            log_info "Begin to download invoice with reference: $url"
+            ./InvoiceDownloader.sh $url $OUTPUT_FOLDER
     fi
-done < $INPUT_CONFIG
+    done < $INPUT_CONFIG
 
-./InvoiceMailer.sh $OUTPUT_FOLDER > >(tee -a log/output.log) 2> >(tee -a log/output.error >&2)
+    log_info "Begin to mail..."
+    ./InvoiceMailer.sh $OUTPUT_FOLDER
+}
+
+main
+

@@ -26,6 +26,7 @@ check_invoice_folder() {
 gen_mail_content() {
     tar czf "$MAIL_ATTACH" -C "$INVOICE_FOLDER" . && mv "$MAIL_ATTACH" "$INVOICE_FOLDER/"
     MAIL_CONTENT=$(ls "$INVOICE_FOLDER"/*pdf | xargs -n 1 basename | awk '{print NR". "$0}')
+    log_info "Generate mail content success!"
 }
 
 send_mail() {
@@ -42,7 +43,7 @@ send_mail() {
 main() {
     check_invoice_folder
     gen_mail_content
-    send_mail1
+    send_mail
 }
 
 main $1
